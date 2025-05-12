@@ -22,8 +22,8 @@ export interface Opportunity {
 }
 
 export interface EmailPrompt {
-  student: UserInput;
   opportunity: Opportunity;
+  userInput: UserInput;
 }
 
 export interface Toast {

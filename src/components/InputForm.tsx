@@ -39,24 +39,42 @@ const InputForm: React.FC = () => {
 
     setIsLoading(true);
     setProjects([]);
+    setErrors({});
 
     try {
+      // Debug: Log form data being sent
+      console.log('Sending form data:', formData);
+
       const response = await fetch('/api/generate/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
+      // Debug: Log raw response
+      console.log('Raw response:', response);
+
       if (!response.ok) {
-        throw new Error('Failed to generate projects');
+        const errorData = await response.json().catch(() => null);
+        console.error('Error response:', errorData);
+        throw new Error(errorData?.error || 'Failed to generate projects');
       }
 
       const data = await response.json();
       console.log('Generated projects:', data);
+
+      if (!Array.isArray(data)) {
+        console.error('Invalid response format:', data);
+        throw new Error('Invalid response format from server');
+      }
+
       setProjects(data);
     } catch (error) {
-      console.error('Error:', error);
-      setErrors(prev => ({ ...prev, submit: 'Failed to generate projects. Please try again.' }));
+      console.error('Error in form submission:', error);
+      setErrors(prev => ({ 
+        ...prev, 
+        submit: error instanceof Error ? error.message : 'Failed to generate projects. Please try again.' 
+      }));
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +89,7 @@ const InputForm: React.FC = () => {
     const value = e.target.value;
     setFormData((prev) => ({
       ...prev,
-      [field]: value.split(',').map((item) => item.trim()),
+      [field]: value.split(',').map((item) => item.trim()).filter(Boolean),
     }));
   };
 

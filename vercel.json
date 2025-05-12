@@ -4,10 +4,6 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "env": {
-    "OPENAI_API_KEY": "@openai_api_key",
-    "NEXT_PUBLIC_ADSENSE_PUBLISHER_ID": "@adsense_publisher_id",
-    "NEXT_PUBLIC_ADSENSE_SLOT_ID": "@adsense_slot_id"
-  }
+  "outputDirectory": ".next",
+  "regions": ["iad1"]
 }

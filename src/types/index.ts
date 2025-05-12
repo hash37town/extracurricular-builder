@@ -1,39 +1,51 @@
 export interface UserInput {
+  name: string;
+  grade: string;
+  interests: string[];
+  skills: string[];
   gradeLevel: string;
   location: string;
-  interests: string[];
-}
-
-export interface Resource {
-  url: string;
-  title: string;
 }
 
 export interface ProjectIdea {
   title: string;
   description: string;
-  requiredSkills: string[];
-  timeCommitment: string;
+  skills: string[];
   impact: string;
-  resources?: Resource[];
+  timeline: string;
 }
-
-export interface GeneratedEmail {
-  subject: string;
-  recipient?: string;
-  body: string;
-}
-
-export type OpportunityType = 'competition' | 'program' | 'internship' | 'volunteer';
 
 export interface Opportunity {
   title: string;
   organization: string;
   description: string;
-  location: string;
-  type: OpportunityType;
-  deadline?: string;
-  url?: string;
+  type: 'competition' | 'program' | 'internship' | 'volunteer';
 }
+
+export interface EmailPrompt {
+  student: UserInput;
+  opportunity: Opportunity;
+}
+
+export interface Toast {
+  id: string;
+  type: 'success' | 'error';
+  message: string;
+}
+
+export interface GeneratedEmail {
+  subject: string;
+  body: string;
+}
+
+export interface ResultsSectionProps {
+  projects?: ProjectIdea[];
+  email?: GeneratedEmail | null;
+  opportunities?: Opportunity[];
+  isLoading?: boolean;
+  error?: string | null;
+}
+
+export type OpportunityType = 'competition' | 'program' | 'internship' | 'volunteer';
 
 export type FormErrors = Partial<Record<keyof UserInput | 'submit', string>>;

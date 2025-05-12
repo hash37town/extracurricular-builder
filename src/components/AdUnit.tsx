@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 
 declare global {
@@ -7,35 +9,25 @@ declare global {
 }
 
 interface AdUnitProps {
+  adClient: string;
+  adSlot: string;
+  adFormat: string;
+  fullWidthResponsive: boolean;
   className?: string;
 }
 
-const AdUnit: React.FC<AdUnitProps> = ({ className = '' }) => {
-  const adRef = useRef<HTMLModElement>(null);
-  const slotId = process.env.NEXT_PUBLIC_ADSENSE_SLOT_ID;
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && slotId) {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (err) {
-        console.error('Error loading AdSense:', err);
-      }
-    }
-  }, []);
-
-  if (!slotId) return null;
-
+const AdUnit: React.FC<AdUnitProps> = ({ adClient, adSlot, adFormat, fullWidthResponsive }) => {
   return (
-    <ins
-      className={`adsbygoogle ${className}`}
-      style={{ display: 'block' }}
-      data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID}
-      data-ad-slot={slotId}
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-      ref={adRef}
-    />
+    <div className="w-full">
+      <ins
+        className="adsbygoogle"
+        style={{ display: 'block' }}
+        data-ad-client={adClient}
+        data-ad-slot={adSlot}
+        data-ad-format={adFormat}
+        data-full-width-responsive={fullWidthResponsive}
+      />
+    </div>
   );
 };
 

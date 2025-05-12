@@ -4,35 +4,38 @@ declare module '@/types' {
   export interface ProjectIdea {
     title: string;
     description: string;
-    requiredSkills: string[];
-    timeCommitment: string;
+    skills: string[];
     impact: string;
-    resources?: Array<{
-      title: string;
-      url: string;
-    }>;
+    timeline: string;
   }
 
   export interface GeneratedEmail {
     subject: string;
     body: string;
-    recipient?: string;
   }
 
   export interface Opportunity {
     title: string;
     organization: string;
     description: string;
-    location: string;
-    type: 'competition' | 'program' | 'internship';
-    deadline?: string;
-    url?: string;
+    type: 'competition' | 'program' | 'internship' | 'volunteer';
   }
 
   export interface UserInput {
+    name: string;
+    grade: string;
+    interests: string[];
+    skills: string[];
     gradeLevel: string;
     location: string;
-    interests: string[];
+  }
+
+  export interface ResultsSectionProps {
+    projects?: ProjectIdea[];
+    email?: GeneratedEmail | null;
+    opportunities?: Opportunity[];
+    isLoading?: boolean;
+    error?: string | null;
   }
 }
 

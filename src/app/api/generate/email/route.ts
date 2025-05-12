@@ -1,42 +1,61 @@
-import { Configuration, OpenAIApi } from 'openai';
+import { Configuration, OpenAIApi } from 'openai-edge';
 import { NextResponse } from 'next/server';
-import { generateEmailPrompt } from '@/lib/openai';
-import type { UserInput } from '@/types';
+import { EmailPrompt } from '@/types';
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+const config = new Configuration({
+  apiKey: process.env.openai_api_key,
 });
+const openai = new OpenAIApi(config);
 
-const openai = new OpenAIApi(configuration);
+export const runtime = 'edge';
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { input, opportunity }: { input: UserInput; opportunity: string } =
-      await request.json();
+    const { opportunity, student } = (await req.json()) as EmailPrompt;
 
-    const completion = await openai.createChatCompletion({
-      model: "gpt-4",
+    const prompt = `Write a professional email to ${opportunity.organization} expressing interest in their ${opportunity.title} opportunity.
+    
+Student Information:
+- Name: ${student.name}
+- Grade: ${student.grade}
+- Interests: ${student.interests.join(', ')}
+- Skills: ${student.skills.join(', ')}
+
+Make the email:
+1. Professional and concise
+2. Highlight relevant skills and interests
+3. Show genuine enthusiasm
+4. Ask about next steps
+5. Include a polite closing
+
+Email format:
+Subject: Interest in ${opportunity.title}
+Body: [Generate the email body]`;
+
+    const response = await openai.createChatCompletion({
+      model: 'gpt-4',
       messages: [
         {
-          role: "system",
-          content: "You are a helpful assistant that generates professional emails for high school students.",
+          role: 'system',
+          content: 'You are a helpful assistant that writes professional emails for students.',
         },
         {
-          role: "user",
-          content: generateEmailPrompt(input, opportunity),
+          role: 'user',
+          content: prompt,
         },
       ],
-      temperature: 0.7,
+      stream: true,
     });
 
-    const response = completion.data.choices[0]?.message?.content;
-    if (!response) {
+    const { choices } = await response.json();
+    const emailContent = choices[0]?.message?.content;
+    if (!emailContent) {
       throw new Error('No response from OpenAI');
     }
 
-    return NextResponse.json(JSON.parse(response));
+    return NextResponse.json({ email: emailContent });
   } catch (error) {
-    console.error('Error in email API:', error);
+    console.error('Error generating email:', error);
     return NextResponse.json(
       { error: 'Failed to generate email' },
       { status: 500 }

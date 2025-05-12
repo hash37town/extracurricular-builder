@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import type { ProjectIdea } from '@/types';
 
@@ -8,47 +10,31 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-      <p className="text-gray-700 mb-4">{project.description}</p>
-
-      <div className="mb-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-2">Required Skills:</h4>
-        <ul className="list-disc list-inside space-y-1">
-          {project.requiredSkills.map((skill, index) => (
-            <li key={index} className="text-gray-600">{skill}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="mb-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-2">Time Commitment:</h4>
-        <p className="text-gray-600">{project.timeCommitment}</p>
-      </div>
-
-      <div className="mb-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-2">Impact:</h4>
-        <p className="text-gray-600">{project.impact}</p>
-      </div>
-
-      {project.resources && project.resources.length > 0 && (
-        <div>
-          <h4 className="text-sm font-semibold text-gray-900 mb-2">Resources:</h4>
-          <ul className="list-disc list-inside space-y-1">
-            {project.resources.map((resource, index) => (
-              <li key={index} className="text-gray-600">
-                <a
-                  href={resource.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-indigo-600 hover:text-indigo-800"
-                >
-                  {resource.title}
-                </a>
-              </li>
+      <h3 className="text-lg font-semibold text-gray-900 mb-2">{project.title}</h3>
+      <p className="text-gray-600 mb-4">{project.description}</p>
+      {project.skills.length > 0 && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">Skills:</h4>
+          <div className="flex flex-wrap gap-2">
+            {project.skills.map((skill, index) => (
+              <span
+                key={index}
+                className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded"
+              >
+                {skill}
+              </span>
             ))}
-          </ul>
+          </div>
         </div>
       )}
+      <div className="space-y-2">
+        <p className="text-sm text-gray-600">
+          <span className="font-medium">Impact:</span> {project.impact}
+        </p>
+        <p className="text-sm text-gray-600">
+          <span className="font-medium">Timeline:</span> {project.timeline}
+        </p>
+      </div>
     </div>
   );
 };

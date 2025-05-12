@@ -1,34 +1,34 @@
-import './globals.css'
-import { Inter } from 'next/font/google'
-import Script from 'next/script'
+import './globals.css';
+import { Inter } from 'next/font/google';
+import Script from 'next/script';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Extracurricular Builder - Find Your Next Project',
-  description: 'AI-powered tool to help students discover and create extracurricular opportunities based on their interests.',
-}
+  title: 'Extracurricular Activity Builder',
+  description: 'Generate personalized extracurricular activity ideas and outreach emails',
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
+  const publisherId = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID;
+
   return (
     <html lang="en">
       <head>
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_CLIENT_ID"
-          crossOrigin="anonymous"
-          strategy="lazyOnload"
-        />
+        {publisherId && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${publisherId}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
       </head>
-      <body className={inter.className}>
-        <main className="min-h-screen bg-gray-50">
-          {children}
-        </main>
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
-  )
+  );
 }

@@ -11,6 +11,7 @@ if (!process.env.OPENAI_API_KEY) {
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
+  basePath: 'https://api.proxyapi.app/openai/v1',
 });
 const openai = new OpenAIApi(config);
 
@@ -52,6 +53,8 @@ Respond only with the JSON array of 3 project ideas.`;
           },
           { role: 'user', content: prompt },
         ],
+        temperature: 0.7,
+        max_tokens: 1000,
       });
 
       // Debug: Log raw OpenAI response

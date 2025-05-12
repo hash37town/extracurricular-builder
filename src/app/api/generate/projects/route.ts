@@ -2,6 +2,10 @@ import { Configuration, OpenAIApi } from 'openai-edge';
 import { UserInput, ProjectIdea } from '@/types';
 import { NextResponse } from 'next/server';
 
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error('Missing OpenAI API key');
+}
+
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -47,9 +51,18 @@ Respond only with the JSON array of 3 project ideas.`;
       throw new Error('No response from OpenAI');
     }
 
-    return NextResponse.json(JSON.parse(content));
+    try {
+      const projects = JSON.parse(content);
+      return NextResponse.json(projects);
+    } catch (parseError) {
+      console.error('Failed to parse OpenAI response:', content);
+      throw new Error('Invalid response format from OpenAI');
+    }
   } catch (error) {
     console.error('Error:', error);
-    return new Response('Error generating projects', { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed to generate projects' },
+      { status: 500 }
+    );
   }
 }

@@ -10,7 +10,6 @@ const InputForm: React.FC = () => {
 
   const [formData, setFormData] = useState<UserInput>({
     name: '',
-    grade: '',
     interests: [],
     skills: [],
     gradeLevel: '',
@@ -24,7 +23,6 @@ const InputForm: React.FC = () => {
     const newErrors: FormErrors = {};
 
     if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.grade) newErrors.grade = 'Grade is required';
     if (formData.interests.length === 0) newErrors.interests = 'At least one interest is required';
     if (formData.skills.length === 0) newErrors.skills = 'At least one skill is required';
     if (!formData.gradeLevel) newErrors.gradeLevel = 'Grade level is required';
@@ -101,21 +99,21 @@ const InputForm: React.FC = () => {
         </div>
 
         <div className="w-full">
-          <label htmlFor="grade" className="block text-sm font-medium text-gray-700 mb-1">
-            Grade
+          <label htmlFor="gradeLevel" className="block text-sm font-medium text-gray-700 mb-1">
+            Grade Level
           </label>
           <input
             type="text"
-            id="grade"
-            name="grade"
-            value={formData.grade}
+            id="gradeLevel"
+            name="gradeLevel"
+            value={formData.gradeLevel}
             onChange={handleInputChange}
             className={`w-full px-4 py-2 rounded-md shadow-sm ${
-              errors.grade ? 'border-red-500' : 'border-gray-300'
+              errors.gradeLevel ? 'border-red-500' : 'border-gray-300'
             } focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors`}
-            placeholder="Current grade"
+            placeholder="e.g., High School Junior"
           />
-          {errors.grade && <p className="mt-1 text-sm text-red-500">{errors.grade}</p>}
+          {errors.gradeLevel && <p className="mt-1 text-sm text-red-500">{errors.gradeLevel}</p>}
         </div>
 
         <div className="md:col-span-2">
@@ -154,25 +152,7 @@ const InputForm: React.FC = () => {
           {errors.skills && <p className="mt-1 text-sm text-red-500">{errors.skills}</p>}
         </div>
 
-        <div className="w-full">
-          <label htmlFor="gradeLevel" className="block text-sm font-medium text-gray-700 mb-1">
-            Grade Level
-          </label>
-          <input
-            type="text"
-            id="gradeLevel"
-            name="gradeLevel"
-            value={formData.gradeLevel}
-            onChange={handleInputChange}
-            className={`w-full px-4 py-2 rounded-md shadow-sm ${
-              errors.gradeLevel ? 'border-red-500' : 'border-gray-300'
-            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors`}
-            placeholder="e.g., High School"
-          />
-          {errors.gradeLevel && <p className="mt-1 text-sm text-red-500">{errors.gradeLevel}</p>}
-        </div>
-
-        <div className="w-full">
+        <div className="md:col-span-2">
           <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
             Location
           </label>

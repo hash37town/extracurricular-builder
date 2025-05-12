@@ -1,6 +1,5 @@
 export interface UserInput {
   name: string;
-  grade: string;
   interests: string[];
   skills: string[];
   gradeLevel: string;

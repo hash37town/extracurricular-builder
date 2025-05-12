@@ -2,8 +2,12 @@
 
 import React, { useState } from 'react';
 import type { UserInput, FormErrors } from '@/types';
+import { useViewport } from '@/hooks/useViewport';
 
 const InputForm: React.FC = () => {
+  const { width } = useViewport();
+  const isMobile = width < 768;
+
   const [formData, setFormData] = useState<UserInput>({
     name: '',
     grade: '',
@@ -69,10 +73,17 @@ const InputForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
+    <form 
+      onSubmit={handleSubmit} 
+      style={{ 
+        width: '100%',
+        maxWidth: isMobile ? '100%' : '600px',
+        margin: '0 auto'
+      }}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+        <div className="w-full">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
             Name
           </label>
           <input
@@ -81,15 +92,16 @@ const InputForm: React.FC = () => {
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            className={`mt-1 block w-full rounded-md shadow-sm ${
+            className={`w-full px-4 py-2 rounded-md shadow-sm ${
               errors.name ? 'border-red-500' : 'border-gray-300'
-            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500`}
+            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors`}
+            placeholder="Your name"
           />
           {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
         </div>
 
-        <div>
-          <label htmlFor="grade" className="block text-sm font-medium text-gray-700">
+        <div className="w-full">
+          <label htmlFor="grade" className="block text-sm font-medium text-gray-700 mb-1">
             Grade
           </label>
           <input
@@ -98,15 +110,16 @@ const InputForm: React.FC = () => {
             name="grade"
             value={formData.grade}
             onChange={handleInputChange}
-            className={`mt-1 block w-full rounded-md shadow-sm ${
+            className={`w-full px-4 py-2 rounded-md shadow-sm ${
               errors.grade ? 'border-red-500' : 'border-gray-300'
-            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500`}
+            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors`}
+            placeholder="Current grade"
           />
           {errors.grade && <p className="mt-1 text-sm text-red-500">{errors.grade}</p>}
         </div>
 
         <div className="md:col-span-2">
-          <label htmlFor="interests" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-1">
             Interests (comma-separated)
           </label>
           <input
@@ -115,15 +128,16 @@ const InputForm: React.FC = () => {
             name="interests"
             value={formData.interests.join(', ')}
             onChange={(e) => handleArrayInputChange(e, 'interests')}
-            className={`mt-1 block w-full rounded-md shadow-sm ${
+            className={`w-full px-4 py-2 rounded-md shadow-sm ${
               errors.interests ? 'border-red-500' : 'border-gray-300'
-            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500`}
+            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors`}
+            placeholder="e.g., programming, art, music"
           />
           {errors.interests && <p className="mt-1 text-sm text-red-500">{errors.interests}</p>}
         </div>
 
         <div className="md:col-span-2">
-          <label htmlFor="skills" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="skills" className="block text-sm font-medium text-gray-700 mb-1">
             Skills (comma-separated)
           </label>
           <input
@@ -132,15 +146,16 @@ const InputForm: React.FC = () => {
             name="skills"
             value={formData.skills.join(', ')}
             onChange={(e) => handleArrayInputChange(e, 'skills')}
-            className={`mt-1 block w-full rounded-md shadow-sm ${
+            className={`w-full px-4 py-2 rounded-md shadow-sm ${
               errors.skills ? 'border-red-500' : 'border-gray-300'
-            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500`}
+            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors`}
+            placeholder="e.g., Python, drawing, teamwork"
           />
           {errors.skills && <p className="mt-1 text-sm text-red-500">{errors.skills}</p>}
         </div>
 
-        <div>
-          <label htmlFor="gradeLevel" className="block text-sm font-medium text-gray-700">
+        <div className="w-full">
+          <label htmlFor="gradeLevel" className="block text-sm font-medium text-gray-700 mb-1">
             Grade Level
           </label>
           <input
@@ -149,15 +164,16 @@ const InputForm: React.FC = () => {
             name="gradeLevel"
             value={formData.gradeLevel}
             onChange={handleInputChange}
-            className={`mt-1 block w-full rounded-md shadow-sm ${
+            className={`w-full px-4 py-2 rounded-md shadow-sm ${
               errors.gradeLevel ? 'border-red-500' : 'border-gray-300'
-            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500`}
+            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors`}
+            placeholder="e.g., High School"
           />
           {errors.gradeLevel && <p className="mt-1 text-sm text-red-500">{errors.gradeLevel}</p>}
         </div>
 
-        <div>
-          <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+        <div className="w-full">
+          <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
             Location
           </label>
           <input
@@ -166,9 +182,10 @@ const InputForm: React.FC = () => {
             name="location"
             value={formData.location}
             onChange={handleInputChange}
-            className={`mt-1 block w-full rounded-md shadow-sm ${
+            className={`w-full px-4 py-2 rounded-md shadow-sm ${
               errors.location ? 'border-red-500' : 'border-gray-300'
-            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500`}
+            } focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors`}
+            placeholder="Your city or region"
           />
           {errors.location && <p className="mt-1 text-sm text-red-500">{errors.location}</p>}
         </div>
@@ -178,7 +195,7 @@ const InputForm: React.FC = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors ${
+          className={`w-full py-3 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors ${
             isLoading ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >

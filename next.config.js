@@ -1,11 +1,35 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  output: 'standalone',
   images: {
-    domains: ['example.com'], // Add any image domains you need
+    domains: ['images.unsplash.com'],
   },
-  // Enable static exports if needed
-  // output: 'export',
+  // Ensure favicon.ico is served from public directory
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(ico|png|jpg|jpeg|gif|svg)$/,
+      type: 'asset/resource',
+    });
+    return config;
+  },
+  // Allow AdSense domain for script loading
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'unsafe-none'
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin'
+          }
+        ],
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig

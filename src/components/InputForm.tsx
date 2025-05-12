@@ -54,14 +54,12 @@ const InputForm: React.FC = () => {
       // Debug: Log raw response
       console.log('Raw response:', response);
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        console.error('Error response:', errorData);
-        throw new Error(errorData?.error || 'Failed to generate projects');
-      }
-
       const data = await response.json();
-      console.log('Generated projects:', data);
+      console.log('Response data:', data);
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate projects');
+      }
 
       if (!Array.isArray(data)) {
         console.error('Invalid response format:', data);
